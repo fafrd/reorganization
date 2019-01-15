@@ -22,11 +22,15 @@ namespace reorganization
 
             using (GethPubSub pubsub = new GethPubSub(gethServer, token))
             {
-                pubsub.SubscribeToNewBlocks().Wait();
+                pubsub.SubscribeToNewBlocks(HandleNewBlock).Wait();
             }
         }
 
-
+        static void HandleNewBlock(string hash, string parentHash)
+        {
+            // TODO where should this data go?
+            Console.WriteLine($"New block: {hash}, parent: {parentHash}");
+        }
     }
 
 }

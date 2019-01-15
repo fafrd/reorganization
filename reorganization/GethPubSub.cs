@@ -16,6 +16,8 @@ namespace reorganization
         readonly Uri _gethServer;
         readonly ClientWebSocket _websock;
 
+        public delegate void HandleNewBlock(string hash, string publicHash);
+
         public GethPubSub(Uri gethServer, CancellationToken ctoken)
         {
             _ctoken = ctoken;
@@ -23,7 +25,7 @@ namespace reorganization
             _websock = new ClientWebSocket();
         }
 
-        public async Task SubscribeToNewBlocks()
+        public async Task SubscribeToNewBlocks(HandleNewBlock delegateBlockHandler)
         {
             string subscriptionId = null;
 
@@ -58,8 +60,7 @@ namespace reorganization
                     string parentHash = (string)param_result["parentHash"];
                     string hash = (string)param_result["hash"];
 
-                    // TODO where should this data go?
-                    Console.WriteLine($"New block: {hash}, parent: {parentHash}");
+                    delegateBlockHandler(hash, parentHash);
                 }
             }
             finally
