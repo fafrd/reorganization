@@ -16,7 +16,7 @@ namespace reorganization
         readonly Uri _gethServer;
         readonly ClientWebSocket _websock;
 
-        public delegate void HandleNewBlock(string hash, string publicHash);
+        public delegate void HandleNewBlock(string hash, string parentHash);
 
         public GethPubSub(Uri gethServer, CancellationToken ctoken)
         {
@@ -26,7 +26,7 @@ namespace reorganization
         }
 
         public async Task SubscribeToNewBlocks(HandleNewBlock delegateBlockHandler)
-        {
+         {
             string subscriptionId = null;
 
             try

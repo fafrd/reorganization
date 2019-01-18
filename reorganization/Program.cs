@@ -18,7 +18,7 @@ namespace reorganization
             CancellationToken token = tokenSource.Token;
             Console.CancelKeyPress += delegate { Console.WriteLine("cancellation requested"); tokenSource.Cancel(); };
 
-            Uri gethServer = new Uri("ws://localhost:8546");
+            Uri gethServer = new Uri("ws://localhost:7546");
 
             using (GethPubSub pubsub = new GethPubSub(gethServer, token))
             {
@@ -30,7 +30,14 @@ namespace reorganization
         {
             // TODO where should this data go?
             Console.WriteLine($"New block: {hash}, parent: {parentHash}");
+
+            BlockData.blocks.Add((hash, parentHash));
         }
     }
 
+    public static class BlockData
+    {
+        // list of valuetuples
+        public static List<(string, string)> blocks = new List<(string, string)>();
+    }
 }
