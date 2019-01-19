@@ -40,7 +40,13 @@ namespace reorganization
                 Console.WriteLine($"Candidate children: ");
                 foreach ((string, string) candidate in sharedParents)
                     Console.WriteLine($"\t{candidate.Item1}");
+                Console.WriteLine($"\t{hash}");
             }
+
+            // hmm!!! I'm realizing that using pub/sub for this is not the right approach, as we are only notified of new blocks at the TIP-
+            // we don't get past blocks.
+            // Say, attacker and monitior have common block #300, monitor is at block #302, attacker is at block #304...
+            // monitor only receives blocks 303, 304, and does not see common parent at block 301.
 
             BlockData.blocks.Add((hash, parentHash));
         }
