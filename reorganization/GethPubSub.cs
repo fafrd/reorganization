@@ -32,6 +32,7 @@ namespace reorganization
             try
             {
                 await _websock.ConnectAsync(_gethServer, _ctoken);
+                Console.WriteLine("Connected to remote server.");
 
                 // Create a subscription for new block headers
                 string request = "{\"id\": 1, \"method\": \"eth_subscribe\", \"params\": [\"newHeads\", {}]}";
@@ -68,7 +69,8 @@ namespace reorganization
                 // TODO use subscriptionId to send eth_unsubscribe
                 // {"id": 1, "method": "eth_unsubscribe", "params": ["0xcd0c3e8af590364c09d0fa6a1210faf5"]}
 
-                await _websock.CloseAsync(WebSocketCloseStatus.Empty, null, _ctoken);
+                if (_websock.State == WebSocketState.Open)
+                    await _websock.CloseAsync(WebSocketCloseStatus.Empty, null, _ctoken);
             }
         }
 
